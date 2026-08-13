@@ -7,6 +7,9 @@ import { clerkMiddleware } from "@clerk/express";
 import User from "./models/user.model.js";
 import { connectDB } from "./lib/db.js";
 import clerkWebhook from "./webhooks/clerk.webhook.js";
+import authRoutes from "./routes/auth.route.js";
+import messageRoutes from "./routes/message.route.js";
+
 import job from "./lib/cron.js";
 
 
@@ -24,7 +27,9 @@ app.get("/health",(req,res)=>{
     
     res.status(200).json({ message: "Server is running!" });
 });
+ app.use("/api/auth",authRoutes);
 
+ app.use("/api/messages",messageRoutes);
 if (fs.existsSync(publicDir)){
 
     app.use(express.static(publicDir));
