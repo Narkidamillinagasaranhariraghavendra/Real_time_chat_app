@@ -39,7 +39,7 @@ if (fs.existsSync(publicDir)){
     })
 }
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     connectDB();
     console.log(`server is up and running on port ${PORT}`);
 

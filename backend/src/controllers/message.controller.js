@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import Message from "../models/message.model.js";
+import { getReceiverSocketId } from "../lib/socket.js";
 
 
 export async function getUsersForidebar(req,res){
@@ -40,5 +41,74 @@ export async function getConversationsForidebar(req,res){
     } catch (error) {
         console.error("Error fetching conversations for sidebar:", error);
         res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+export async function getmessages(req,res){
+
+    try{
+        const {id:userTochatId}=req.params;
+        const myId=req.user._id;
+
+        const messages=await Message.find({
+            $or:[
+               
+            {senderId:myId,recieverId:userToChatId},
+            {senderId:userToChatId,recieverId:myId},
+            ]
+        }).sort({createdAt:1})
+        res.status(200).json(messages);
+
+    }catch(error){
+
+        console.error("Error in getMessages:",error.message);
+        res.status(500).json({message:"Internal server error"});
+
+    }
+}
+
+export async function sendMessage(req,res){
+    try{
+
+
+        const{text}=req.body;
+        const{id:recieverId}=req.params;
+        const SenderId=req.user._id;
+
+        let imageUrl;
+        let videoUrl;
+
+        if (req.file){
+            if(!hasImageKitConfig()){
+                return res.status(500).json({message:"Media upload is not configured"});
+            }
+        
+        const url= await  uploadChatMedia(req.file);
+        if (req.file.mimetype.startsWith("video/")) videoUrl=url;
+        else imageUrl=url;
+        }
+        const newMessage=new Message({
+           SenderId,
+           recieverId,
+           text,
+           image:imageUrl,
+           video:videoUrl,
+        })
+        await  newMessage.save();
+
+
+        const receiverSocketId=getReceiverSocketId(receiverId)
+        //only send the message in realtime if user is online
+        if(receiverSocketId){
+            io.to(receiverSocketId).emit("newMessage",newMessage)
+        }
+
+        res.status(201).json(newMessage)
+    }catch(error){
+
+        console.error("Error in sendmessage:",error.meeage);
+        res.status(500).json({message:"Internal server error"});
+
+
     }
 }
