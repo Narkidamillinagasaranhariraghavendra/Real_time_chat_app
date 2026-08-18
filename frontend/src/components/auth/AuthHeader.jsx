@@ -1,5 +1,5 @@
 import { APP_NAME, AppLogo } from "../AppLogo";
-import { ThemePresentPicker } from "../ThemePresentPicker";
+import { ThemePresetPicker } from "../ThemePresentPicker";
 import { ThemeToggle } from "../ThemeToggle";
 import { WallpaperPicker } from "../WallpaperPicker";
 
