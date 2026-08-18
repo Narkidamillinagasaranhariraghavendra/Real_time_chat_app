@@ -7,11 +7,14 @@ function AuthPage() {
   const { frameStyle } = useWallpaper();
 
   return (
-    <div className="box-border flex min-h-dvh flex-col p-3 sm:p-5 md:p-8" style={frameStyle}>
-      <div className="mx-auto flex w-full max-w-368 flex-1 flex-col overflow-hidden rounded-3xl border border-border bg-background text-foreground">
+    <div
+      className="box-border flex min-h-dvh flex-col bg-[#f3f3f5] p-0 text-[#111827] dark:bg-[#0b0b0d] dark:text-white"
+      style={frameStyle}
+    >
+      <div className="mx-auto flex w-full max-w-[1600px] flex-1 flex-col overflow-hidden bg-[#f5f5f7] dark:bg-[#111214]">
         <AuthHeader />
 
-        <main className="relative flex flex-1 flex-col overflow-hidden md:flex-row">
+        <main className="grid flex-1 grid-cols-1 xl:grid-cols-[minmax(0,1fr)_380px]">
           <AuthHeroPanel />
           <AuthActionPanel />
         </main>
