@@ -2,27 +2,31 @@ import express from "express";
 import http from "http";
 import { Server } from "socket.io";
 
-const app=express();
-const server=http.createServer(app);
-const allowedOrigin=process.env.FRONTEND_URL|| "http://localhsot:5173";
+const app = express();
+const server = http.createServer(app);
+const allowedOrigin = process.env.FRONTEND_URL || "http://localhost:5173";
 
-const io=new Server(server,{cors:{orign:[allowedOrigin]}});
+const io = new Server(server, { cors: { origin: [allowedOrigin] } });
 
-const userSocketMap={};
+const userSocketMap = {};
 
-io.on("connection",(socket)=>{
+export function getReceiverSocketId(userId) {
+    return userSocketMap[userId];
+}
 
-    const userId=socket.handshake.query.userId;
+io.on("connection", (socket) => {
 
-    if(userId) userSocketMap[userId]=socket.id
-    //io.emit() is sends event to everyone -broadcast
-    io.emit("getOnlineUsers",Object.keys(userSocketMap));
-    
-    socket.on("disconnect",() =>{
-        if(userId) delete userSocketMap[userId];
-        io.emit("getOnlineUsers",Object.keys(userSocketMap));
-    })
-    //socket on is used to listen for events
+    const userId = socket.handshake.query.userId;
+
+    if (userId) userSocketMap[userId] = socket.id;
+    // io.emit() sends an event to everyone - broadcast
+    io.emit("getOnlineUsers", Object.keys(userSocketMap));
+
+    socket.on("disconnect", () => {
+        if (userId) delete userSocketMap[userId];
+        io.emit("getOnlineUsers", Object.keys(userSocketMap));
+    });
+    // socket.on is used to listen for events
 });
 
-export {app,server,io,getReceiverSocketId};
+export { app, server, io };
