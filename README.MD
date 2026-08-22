@@ -1,4 +1,4 @@
-# 💬 realtimechat
+# 💬 Real_time_chat_app
 
 > **Lightning-fast real-time messaging** | Connect instantly with anyone, anywhere. Built for speed, designed for simplicity.
 
@@ -9,9 +9,9 @@
 
 ---
 
-## 🚀 What is realtimechat?
+## 🚀 What is Real_time_chat_app?
 
-A **blazing-fast, real-time messaging platform** that brings people together. With Socket.io under the hood, Clerk's secure authentication, and a beautiful Hero UI interface—realtimechat makes communication seamless and instant.
+A **blazing-fast, real-time messaging platform** that brings people together. With Socket.io under the hood, Clerk's secure authentication, and a beautiful Hero UI interface—Real_time_chat_app makes communication seamless and instant.
 
 ✨ **Key Highlights:**
 - 🔥 Lightning-fast real-time messaging with WebSocket
@@ -41,8 +41,8 @@ Make sure you have these installed on your machine:
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/realtimechat.git
-cd realtimechat
+git clone https://github.com/yourusername/Real_time_chat_app.git
+cd Real_time_chat_app
 ```
 
 💡 *Replace `yourusername` with your GitHub username or organization name.*
@@ -117,7 +117,7 @@ Your Express server is now running on **[http://localhost:5000](http://localhost
 ## 📁 Project Structure
 
 ```
-realtimechat/
+Real_time_chat_app/
 │
 ├── 🎨 frontend/                    # React + Hero UI
 │   ├── public/
@@ -233,7 +233,7 @@ Love realtimechat? Help us make it better!
 
 ## 🐛 Found a Bug?
 
-Report it! 👉 [Open an Issue](https://github.com/yourusername/realtimechat/issues)
+Report it! 👉 [Open an Issue](https://github.com/yourusername/Real_time_chat_app/issues)
 
 Include:
 - 📝 Clear description of the bug
@@ -282,10 +282,10 @@ Built with ❤️ using cutting-edge web technologies. Special thanks to:
 
 <div align="center">
 
-### ⭐ If you find realtimechat useful, please give it a star! ⭐
+### ⭐ If you find Real_time_chat_app useful, please give it a star! ⭐
 
-**Made with 💜 by the realtimechat team**
+**Made with 💜 by the Real_time_chat_app team**
 
-[⬆ Back to Top](#-realtimechat)
+[⬆ Back to Top](#-real_time_chat_app)
 
 </div>
