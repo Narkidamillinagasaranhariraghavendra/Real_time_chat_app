@@ -23,6 +23,8 @@ router.post("/", async (req, res) => {
     // throws if the signature is wrong or the body was tampered with; only then do we trust evt.
     const evt = await verifyWebhook(request, { signingSecret });
 
+    console.log("🔔 Webhook received:", evt.type);
+
     if (evt.type === "user.created" || evt.type === "user.updated") {
       const u = evt.data;
 
@@ -33,15 +35,20 @@ router.post("/", async (req, res) => {
       const fullName =
         [u.first_name, u.last_name].filter(Boolean).join(" ") || u.username || email?.split("@")[0];
 
-      await User.findOneAndUpdate(
+      const user = await User.findOneAndUpdate(
         { clerkId: u.id },
         { clerkId: u.id, email, fullName, profilePic: u.image_url },
-        { new: true, upsert: true, setDefaultsOnInsert: true },
+        { returnDocument: 'after', upsert: true, setDefaultsOnInsert: true },
       );
+
+      console.log("✅ User saved/updated:", user?.email);
     }
 
     if (evt.type === "user.deleted") {
-      if (evt.data.id) await User.findOneAndDelete({ clerkId: evt.data.id });
+      if (evt.data.id) {
+        await User.findOneAndDelete({ clerkId: evt.data.id });
+        console.log("❌ User deleted:", evt.data.id);
+      }
     }
 
     res.status(200).json({ received: true });
