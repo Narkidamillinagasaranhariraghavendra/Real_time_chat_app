@@ -20,9 +20,9 @@ export async function getConversationsForidebar(req,res){
     try{
         const loggedInUserId = req.user._id;
         const conversations = await Message.aggregate([
-            {$match: { $or: [{ senderId: loggedInUserId }, { receiverId: loggedInUserId }] }},
+            {$match: { $or: [{ senderId: loggedInUserId }, { recieverId: loggedInUserId }] }},
             {$group: {
-                _id:{$cond: [{ $eq: ["$senderId", loggedInUserId] }, "$receiverId", "$senderId"]},
+                _id:{$cond: [{ $eq: ["$senderId", loggedInUserId] }, "$recieverId", "$senderId"]},
             lastMessageAt:{$max:"$createdAt"}
             }},
             {$sort:{ lastMessageAt:-1}},
@@ -31,10 +31,7 @@ export async function getConversationsForidebar(req,res){
             {$replaceRoot:{newRoot:{$first:"$user"}
             }},
 
-            {project:{clerkId:0}},
-
-
-
+            {$project:{clerkId:0}},
         ]);
 
         res.status(200).json(conversations);
@@ -47,12 +44,11 @@ export async function getConversationsForidebar(req,res){
 export async function getmessages(req,res){
 
     try{
-        const {id:userTochatId}=req.params;
+        const {id:userToChatId}=req.params;
         const myId=req.user._id;
 
         const messages=await Message.find({
             $or:[
-               
             {senderId:myId,recieverId:userToChatId},
             {senderId:userToChatId,recieverId:myId},
             ]
@@ -73,7 +69,7 @@ export async function sendMessage(req,res){
 
         const{text}=req.body;
         const{id:recieverId}=req.params;
-        const SenderId=req.user._id;
+        const senderId=req.user._id;
 
         let imageUrl;
         let videoUrl;
@@ -88,7 +84,7 @@ export async function sendMessage(req,res){
         else imageUrl=url;
         }
         const newMessage=new Message({
-           SenderId,
+           senderId,
            recieverId,
            text,
            image:imageUrl,
@@ -97,7 +93,7 @@ export async function sendMessage(req,res){
         await  newMessage.save();
 
 
-        const receiverSocketId=getReceiverSocketId(receiverId)
+        const receiverSocketId=getReceiverSocketId(recieverId)
         //only send the message in realtime if user is online
         if(receiverSocketId){
             io.to(receiverSocketId).emit("newMessage",newMessage)
@@ -106,7 +102,7 @@ export async function sendMessage(req,res){
         res.status(201).json(newMessage)
     }catch(error){
 
-        console.error("Error in sendmessage:",error.meeage);
+        console.error("Error in sendmessage:",error.message);
         res.status(500).json({message:"Internal server error"});
 
 

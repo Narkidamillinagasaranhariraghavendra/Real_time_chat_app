@@ -6,20 +6,21 @@ import AuthPage from "./pages/AuthPage";
 import { useAuth } from "@clerk/react";
 import PageLoader from "./components/PageLoader";
 import { useAuthStore } from "./store/useAuthStore";
+import { setGetToken } from "./lib/axios";
 import { useEffect } from "react";
-
 import { Toaster } from "react-hot-toast";
 
 function App() {
-  const { isSignedIn, isLoaded } = useAuth();
+  const { isSignedIn, isLoaded, getToken } = useAuth();
 
-  // option 1
-  // const { checkAuth, isCheckingAuth, clearAuth } = useAuthStore();
-
-  // option 2 - better for performance
   const clearAuth = useAuthStore((state) => state.clearAuth);
   const checkAuth = useAuthStore((state) => state.checkAuth);
   const isCheckingAuth = useAuthStore((state) => state.isCheckingAuth);
+
+  // Set the getToken function for axios
+  useEffect(() => {
+    setGetToken(getToken);
+  }, [getToken]);
 
   useEffect(() => {
     if (!isLoaded) return;

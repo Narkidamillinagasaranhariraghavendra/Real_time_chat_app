@@ -23,7 +23,7 @@ function mapUserToConversation({ user, messages, authUser, onlineUsers }) {
     id: message._id,
     role: String(message.senderId) === String(authUser?._id) ? "me" : "them",
     text: message.text || "",
-    time: formatMessageTime(message.createdAt),
+    time: formatMessage(message.createdAt),
     imageUrl: message.image,
     videoUrl: message.video,
   }));
